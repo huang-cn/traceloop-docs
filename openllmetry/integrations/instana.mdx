@@ -24,6 +24,13 @@ com.instana.plugin.opentelemetry:
   enabled: true
   grpc:
     enabled: true
+  http:
+    enabled: true
+```
+
+vi com.instana.agent.main.config.Agent.cfg add the following, otherwise only local data will be accepted.
+```
+http.listen = *
 ```
 
 Restart the Instana agent:
@@ -32,10 +39,16 @@ Restart the Instana agent:
 systemctl restart instana-agent.service
 ```
 
-The Instana agent should be ready for OpenTelemetry data at port 4317.
+The Instana agent should be ready for OpenTelemetry GRPC data at port 4317 and HTTP data at port 4318.
 
 Then, set this env var, and you're done!
 
+For GRPC data:
 ```bash
 TRACELOOP_BASE_URL=<instana-agent-hostname>:4317
+```
+
+For HTTP data:
+```bash
+TRACELOOP_BASE_URL=http://<instana-agent-hostname>:4318
 ```
